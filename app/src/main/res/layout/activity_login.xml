@@ -8,11 +8,14 @@
 
     <EditText
         android:id="@+id/et_email"
+        android:hint="Masukkan Email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/et_password"
+        android:inputType="textPassword"
+        android:hint="Masukkan Passsword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/et_email"/>

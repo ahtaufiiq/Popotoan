@@ -1,10 +1,10 @@
 package com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addPost(View view) {
-        Intent i = new Intent(MainActivity.this,AddPostActivity.class);
+        Intent i = new Intent(MainActivity.this, AddPostActivity.class);
         startActivity(i);
     }
 }

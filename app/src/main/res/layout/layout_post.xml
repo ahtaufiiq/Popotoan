@@ -9,9 +9,9 @@
     >
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/margin_8">
+        android:padding="@dimen/margin_8">
         <TextView
             android:id="@+id/tv_username"
             android:text="username"
@@ -24,6 +24,7 @@
             android:layout_marginTop="@dimen/margin_8"
             android:layout_below="@id/tv_username"
             android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_launcher_background"/>
 

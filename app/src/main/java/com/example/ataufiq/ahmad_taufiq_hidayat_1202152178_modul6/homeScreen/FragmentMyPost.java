@@ -38,6 +38,7 @@ public class FragmentMyPost extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_post, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         databaseFood = FirebaseDatabase.getInstance().getReference(MainActivity.table1).orderByChild("userID").equalTo(mAuth.getUid());
@@ -61,9 +62,10 @@ public class FragmentMyPost extends Fragment {
 
                     listPosts.add(post);
                 }
-                recyclerView.setHasFixedSize(true);
+
 
                 recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+
 
                 PostAdapter postList = new PostAdapter(getContext(),listPosts);
 

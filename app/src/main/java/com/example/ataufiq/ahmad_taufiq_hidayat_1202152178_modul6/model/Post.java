@@ -8,25 +8,17 @@ public class Post {
     private String post;
     private String imagePost;
 
-
-    public Post(String id, String userID,String username,String mImagePost, String titlePost, String post) {
-        this.id = id;
-        this.username = username;
-        this.imagePost=mImagePost;
-        this.titlePost = titlePost;
-        this.post = post;
-        this.userID = userID;
-    }
-
     //Wajib kasih Constructor Kosong
     public Post() {
     }
 
-    public Post(String id, String username, String titlePost, String post) {
+    public Post(String id, String userID, String username, String mImagePost, String titlePost, String post) {
         this.id = id;
         this.username = username;
+        this.imagePost = mImagePost;
         this.titlePost = titlePost;
         this.post = post;
+        this.userID = userID;
     }
 
     public String getImagePost() {

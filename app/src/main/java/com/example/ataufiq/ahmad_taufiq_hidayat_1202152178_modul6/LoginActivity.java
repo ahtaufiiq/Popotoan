@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     String email, password;
 
     private FirebaseAuth mAuth;
-    DatabaseReference databaseFood;
+    DatabaseReference databaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         mEmail = findViewById(R.id.et_email);
         mPassword = findViewById(R.id.et_password);
 
-         databaseFood = FirebaseDatabase.getInstance().getReference(MainActivity.table1);
+        databaseUser = FirebaseDatabase.getInstance().getReference(MainActivity.table3);
 
         mMasuk = findViewById(R.id.btn_masuk);
         mMasuk.setOnClickListener(new View.OnClickListener() {
@@ -72,40 +72,32 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if(currentUser != null){
-
+        if (currentUser != null) {
             sendToMain();
-
         }
 
     }
 
-    private void createAccount(String email, String password) {
-        Log.d(TAG, "createAccount:" + email);
+    private void createAccount(final String email, final String password) {
 
-        // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            String id = mAuth.getUid();
+                            String[] username= email.split("@");
+                            User user = new User(id,username[0],email);
+                            databaseUser.child(id).setValue(user);
                             Intent i = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(i);
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -114,31 +106,24 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIn(String email, String password) {
-        Log.d(TAG, "signIn:" + email);
 
-        // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
+
                             FirebaseUser user = mAuth.getCurrentUser();
                             Intent i = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(i);
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+
                             Toast.makeText(LoginActivity.this, "Akun Belum Terdaftar",
                                     Toast.LENGTH_SHORT).show();
-
                         }
-
-
                     }
                 });
-        // [END sign_in_with_email]
+
     }
 
     private boolean validateForm() {
@@ -152,11 +137,10 @@ public class LoginActivity extends AppCompatActivity {
         return valid;
 
     }
-    private void sendToMain() {
 
+    private void sendToMain() {
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(mainIntent);
         finish();
-
     }
 }

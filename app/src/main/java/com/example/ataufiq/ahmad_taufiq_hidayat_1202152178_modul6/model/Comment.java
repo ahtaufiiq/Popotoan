@@ -15,7 +15,9 @@ public class Comment {
         this.comment = comment;
     }
 
-
+    public String getId() {
+        return id;
+    }
 
     public String getUsername() {
         return username;

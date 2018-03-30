@@ -36,7 +36,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public ImageView mImagePost;
         public CardView cardViewPost;
 
-
         public ViewHolder(View itemView) {
             super(itemView);
 
@@ -62,15 +61,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         holder.mUsername.setText(post.getUsername());
 
-        Glide.with(context).load(post.getImagePost()).into(holder.mImagePost);
+
+        Glide.with(context)
+                .load(post.getImagePost())
+                .into(holder.mImagePost);
+
         holder.mTitlePost.setText(post.getTitlePost());
+
         holder.mPost.setText(post.getPost());
+
         holder.cardViewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailPostActivity.class);
                 intent.putExtra("id",post.getId());
                 intent.putExtra("Username",post.getUsername());
+                intent.putExtra("image",post.getImagePost());
                 intent.putExtra("Title",post.getTitlePost());
                 intent.putExtra("Post",post.getPost());
                 context.startActivity(intent);

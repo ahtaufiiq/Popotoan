@@ -2,6 +2,7 @@ package com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,51 +13,63 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.adapter.CommentAdapter;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model.Comment;
+import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model.Post;
+import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 
 public class DetailPostActivity extends AppCompatActivity {
 
-    TextView mUsername,mTitlePost,mPost;
+    TextView mUsername, mTitlePost, mPost;
     ImageView mImagePost;
     EditText et_comment;
     DatabaseReference databaseComments;
-
+    DatabaseReference databaseUser;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-
+    FirebaseAuth mAuth;
     private ArrayList<Comment> listComments;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_post);
-
+        mAuth = FirebaseAuth.getInstance();
         //find Intent from Main Activity
         Intent intent = getIntent();
-        String id= intent.getStringExtra("id");
+        String id = intent.getStringExtra("id");
         String username = intent.getStringExtra("Username");
+        String image = intent.getStringExtra("image");
         String mTitle = intent.getStringExtra("Title");
         String mDescription = intent.getStringExtra("Post");
 
         databaseComments = FirebaseDatabase.getInstance().getReference(MainActivity.table2).child(id);
+        databaseUser = FirebaseDatabase.getInstance().getReference(MainActivity.table3);
 
-        recyclerView= findViewById(R.id.recyclerViewComment);
+        recyclerView = findViewById(R.id.recyclerViewComment);
 
-        listComments= new ArrayList<>();
+        listComments = new ArrayList<>();
 
-        mUsername= findViewById(R.id.tv_username);
-        mImagePost=findViewById(R.id.img_post);
-        mTitlePost= findViewById(R.id.tv_title_post);
-        mPost= findViewById(R.id.tv_post);
+        mUsername = findViewById(R.id.tv_username);
+        mImagePost = findViewById(R.id.img_post);
+        mTitlePost = findViewById(R.id.tv_title_post);
+        mPost = findViewById(R.id.tv_post);
 
-        et_comment=findViewById(R.id.et_comment);
+        Glide.with(DetailPostActivity.this).load(image).into(mImagePost);
+
+        et_comment = findViewById(R.id.et_comment);
 
         mUsername.setText(username);
         mTitlePost.setText(mTitle);
@@ -65,18 +78,29 @@ public class DetailPostActivity extends AppCompatActivity {
 
 
     public void addComment(View view) {
-        String textReview = et_comment.getText().toString().trim();
-        if (!TextUtils.isEmpty(textReview)) {
+        databaseUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-            String id  = databaseComments.push().getKey();
-            Comment track = new Comment(id,"Budi", textReview);
-            databaseComments.child(id).setValue(track);
-            Toast.makeText(this, "Comment Sent", Toast.LENGTH_LONG).show();
-            et_comment.setText("");
-        } else {
-            Toast.makeText(this, "Please enter Comment", Toast.LENGTH_LONG).show();
-        }
+                User user=dataSnapshot.child(mAuth.getUid()).getValue(User.class);
+                String textReview = et_comment.getText().toString().trim();
+                if (!TextUtils.isEmpty(textReview)) {
 
+                    String id = databaseComments.push().getKey();
+                    Comment track = new Comment(id, user.getUsername(), textReview);
+                    databaseComments.child(id).setValue(track);
+                    Toast.makeText(DetailPostActivity.this, "Comment Sent", Toast.LENGTH_LONG).show();
+                    et_comment.setText("");
+                } else {
+                    Toast.makeText(DetailPostActivity.this, "Please enter Comment", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -87,22 +111,20 @@ public class DetailPostActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                //clearing the previous artist list
                 listComments.clear();
 
-                //iterating through all the nodes
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    //getting artist
+
                     Comment comment = postSnapshot.getValue(Comment.class);
-                    //adding artist to the list
+
                     listComments.add(comment);
                 }
                 recyclerView.setHasFixedSize(true);
 
-                recyclerView.setLayoutManager(new GridLayoutManager(DetailPostActivity.this,1));
-                //creating adapter
-                CommentAdapter commentList = new CommentAdapter(DetailPostActivity.this,listComments);
-                //attaching adapter to the listview
+                recyclerView.setLayoutManager(new GridLayoutManager(DetailPostActivity.this, 1));
+
+                CommentAdapter commentList = new CommentAdapter(DetailPostActivity.this, listComments);
+
                 recyclerView.setAdapter(commentList);
             }
 
