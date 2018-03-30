@@ -29,7 +29,7 @@
             <EditText
                 android:id="@+id/et_title_post"
                 android:hint="Title"
-                android:layout_below="@id/btn_choose_file"
+                android:layout_below="@id/btn_choose_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
