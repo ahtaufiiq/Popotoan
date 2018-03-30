@@ -1,13 +1,19 @@
 package com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.homeScreen.PagerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         // Set the tabs to fill the entire layout.
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
+        mAuth = FirebaseAuth.getInstance();
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.mainPager);
         final PagerAdapter adapter = new PagerAdapter
@@ -46,5 +53,27 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    //ketika menu dibuat
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    //method yang dijalankan ketika item di pilih
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //get item id
+        int id = item.getItemId();
+        // if action setting
+        if (id == R.id.logout) {
+            mAuth.signOut();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return true;
     }
 }
