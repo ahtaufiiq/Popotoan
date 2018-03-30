@@ -38,25 +38,24 @@
     </android.support.design.widget.TextInputLayout>
 
 
-
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/et_password"
-        android:weightSum="2" >
+        android:weightSum="2">
 
         <Button
             android:id="@+id/btn_masuk"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="masuk" />
 
         <Button
             android:id="@+id/btn_daftar"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Daftar" />
 
     </TableRow>

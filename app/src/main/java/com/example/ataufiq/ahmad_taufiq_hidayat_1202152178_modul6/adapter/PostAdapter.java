@@ -2,7 +2,10 @@ package com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.DetailPostActivity;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.R;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model.Post;
@@ -44,7 +48,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             mPost = itemView.findViewById(R.id.tv_post);
             mImagePost=itemView.findViewById(R.id.img_post);
             cardViewPost= itemView.findViewById(R.id.cardViewPost);
-
         }
     }
     @NonNull
@@ -60,7 +63,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         final Post post= postList.get(position);
 
         holder.mUsername.setText(post.getUsername());
-
 
         Glide.with(context)
                 .load(post.getImagePost())

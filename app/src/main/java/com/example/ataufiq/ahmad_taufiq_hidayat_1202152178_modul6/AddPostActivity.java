@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -34,6 +34,7 @@ public class AddPostActivity extends AppCompatActivity {
 
     EditText mTitlePost, mPost;
     ImageView imageView;
+    Button mChooseImage;
     //our database reference object
     DatabaseReference databaseFood;
     FirebaseAuth mAuth;
@@ -62,9 +63,10 @@ public class AddPostActivity extends AppCompatActivity {
 
         mTitlePost = (EditText) findViewById(R.id.et_title_post);
         mPost = (EditText) findViewById(R.id.et_post);
-
         imageView = findViewById(R.id.img_post);
-        imageView.setOnClickListener(new View.OnClickListener() {
+
+        mChooseImage = findViewById(R.id.btn_choose_image);
+        mChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
@@ -81,9 +83,9 @@ public class AddPostActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                User user=dataSnapshot.child(mAuth.getUid()).getValue(User.class);
+                User user = dataSnapshot.child(mAuth.getUid()).getValue(User.class);
 
-                final String name=user.getUsername();
+                final String name = user.getUsername();
                 final String title = mTitlePost.getText().toString();
                 final String postMessage = mPost.getText().toString();
                 final String id = databaseFood.push().getKey();
@@ -116,7 +118,7 @@ public class AddPostActivity extends AppCompatActivity {
                     startActivity(i);
                 } else {
                     //if the value is not given displaying a toast
-                    Toast.makeText(AddPostActivity.this, "Please enter a name", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddPostActivity.this, "Please Fill the form and choose image", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -133,11 +135,8 @@ public class AddPostActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE) {
-
             imageUri = data.getData();
             imageView.setImageURI(imageUri);
-
         }
-
     }
 }

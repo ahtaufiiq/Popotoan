@@ -7,7 +7,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model.User;
@@ -93,8 +92,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             String id = mAuth.getUid();
-                            String[] username= email.split("@");
-                            User user = new User(id,username[0],email);
+                            String[] username = email.split("@");
+                            User user = new User(id, username[0], email);
                             databaseUser.child(id).setValue(user);
                             Intent i = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(i);

@@ -1,11 +1,17 @@
 package com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.R;
@@ -18,7 +24,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     Context context;
     List<Comment> commentList;
-
+    RoundedBitmapDrawable rounded;
 
     public CommentAdapter(Context context, List<Comment> commentList) {
         this.context = context;
@@ -28,9 +34,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mUsername;
         TextView mComment;
+        ImageView imageView;
         public ViewHolder(View itemView) {
             super(itemView);
-
+            imageView=itemView.findViewById(R.id.img_avatar);
             mUsername=itemView.findViewById(R.id.tv_username);
             mComment=itemView.findViewById(R.id.tv_comment);
         }
@@ -45,16 +52,27 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommentAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Comment comment= commentList.get(position);
 
         holder.mUsername.setText(comment.getUsername());
         holder.mComment.setText(comment.getComment());
+//        setupImageRounded();
+        holder.imageView.setImageResource(R.drawable.ic_account_circle_black_24dp);
+
     }
+//    private void setupImageRounded() {
+//        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.test);
+//        rounded = RoundedBitmapDrawableFactory.create(context.getResources(), bitmap);
+//        rounded.setCircular(true);
+//
+//    }
 
     @Override
     public int getItemCount() {
         return commentList.size();
     }
+
+
 
 }

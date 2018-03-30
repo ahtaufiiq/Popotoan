@@ -16,7 +16,6 @@ import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model.Post;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -32,6 +31,7 @@ public class FragmentMyPost extends Fragment {
     private ArrayList<Post> listPosts;
 
     Query databaseFood;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,11 +39,12 @@ public class FragmentMyPost extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
+
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         databaseFood = FirebaseDatabase.getInstance().getReference(MainActivity.table1).orderByChild("userID").equalTo(mAuth.getUid());
 
-        listPosts = new ArrayList<>() ;
+        listPosts = new ArrayList<>();
 
         return view;
     }
@@ -59,19 +60,15 @@ public class FragmentMyPost extends Fragment {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
                     Post post = postSnapshot.getValue(Post.class);
-
                     listPosts.add(post);
                 }
 
+                recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-                recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
-
-
-                PostAdapter postList = new PostAdapter(getContext(),listPosts);
+                PostAdapter postList = new PostAdapter(getContext(), listPosts);
 
                 recyclerView.setAdapter(postList);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 

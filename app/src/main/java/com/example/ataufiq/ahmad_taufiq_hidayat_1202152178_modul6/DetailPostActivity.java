@@ -2,7 +2,6 @@ package com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,18 +15,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.adapter.CommentAdapter;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model.Comment;
-import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model.Post;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 
@@ -82,7 +76,7 @@ public class DetailPostActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                User user=dataSnapshot.child(mAuth.getUid()).getValue(User.class);
+                User user = dataSnapshot.child(mAuth.getUid()).getValue(User.class);
                 String textReview = et_comment.getText().toString().trim();
                 if (!TextUtils.isEmpty(textReview)) {
 

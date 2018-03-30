@@ -1,6 +1,7 @@
 package com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.homeScreen;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -27,6 +28,8 @@ public class FragmentPostTerbaru extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
+    ProgressDialog mProgressDialog;
+
     private ArrayList<Post> listPosts;
     //our database reference object
     DatabaseReference databaseFood;
@@ -37,6 +40,12 @@ public class FragmentPostTerbaru extends Fragment {
         View view = inflater.inflate(R.layout.fragment_post_terbaru, container, false);
 
         databaseFood = FirebaseDatabase.getInstance().getReference(MainActivity.table1);
+
+        mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setTitle("Loading Data");
+        mProgressDialog.setMessage("Please wait....");
+        mProgressDialog.show();
 
         recyclerView = view.findViewById(R.id.recyclerView);
 
@@ -67,6 +76,7 @@ public class FragmentPostTerbaru extends Fragment {
                 PostAdapter postList = new PostAdapter(getContext(), listPosts);
 
                 recyclerView.setAdapter(postList);
+                mProgressDialog.dismiss();
             }
 
             @Override
