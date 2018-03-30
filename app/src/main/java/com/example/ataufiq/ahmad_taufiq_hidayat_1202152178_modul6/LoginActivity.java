@@ -3,6 +3,7 @@ package com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "Authentication Email";
-    EditText mEmail, mPassword;
+    TextInputLayout mEmail, mPassword;
     Button mDaftar, mMasuk;
 
     String email, password;
@@ -45,8 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         mMasuk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email = mEmail.getText().toString();
-                password = mPassword.getText().toString();
+                email = mEmail.getEditText().getText().toString();
+                password = mPassword.getEditText().getText().toString();
 
                 if (validateForm()) {
                     signIn(email, password);
@@ -61,8 +62,8 @@ public class LoginActivity extends AppCompatActivity {
         mDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email = mEmail.getText().toString();
-                password = mPassword.getText().toString();
+                email = mEmail.getEditText().getText().toString();
+                password = mPassword.getEditText().getText().toString();
 
                 if (validateForm()) {
                     createAccount(email, password);
