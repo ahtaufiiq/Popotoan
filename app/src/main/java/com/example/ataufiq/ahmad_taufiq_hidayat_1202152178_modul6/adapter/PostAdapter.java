@@ -1,7 +1,9 @@
 package com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.DetailPostActivity;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.R;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model.Post;
 
@@ -30,6 +34,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public TextView mTitlePost;
         public TextView mPost;
         public ImageView mImagePost;
+        public CardView cardViewPost;
 
 
         public ViewHolder(View itemView) {
@@ -39,6 +44,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             mTitlePost = itemView.findViewById(R.id.tv_title_post);
             mPost = itemView.findViewById(R.id.tv_post);
             mImagePost=itemView.findViewById(R.id.img_post);
+            cardViewPost= itemView.findViewById(R.id.cardViewPost);
+
         }
     }
     @NonNull
@@ -50,13 +57,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Post post= postList.get(position);
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        final Post post= postList.get(position);
 
         holder.mUsername.setText(post.getUsername());
+
+        Glide.with(context).load(post.getImagePost()).into(holder.mImagePost);
         holder.mTitlePost.setText(post.getTitlePost());
         holder.mPost.setText(post.getPost());
-
+        holder.cardViewPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetailPostActivity.class);
+                intent.putExtra("id",post.getId());
+                intent.putExtra("Username",post.getUsername());
+                intent.putExtra("Title",post.getTitlePost());
+                intent.putExtra("Post",post.getPost());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

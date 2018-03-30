@@ -9,9 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.MainActivity;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.R;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.adapter.PostAdapter;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model.Post;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -21,28 +29,51 @@ public class FragmentMyPost extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
-    private ArrayList<Post> listItems;
+    private ArrayList<Post> listPosts;
 
+    Query databaseFood;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_post, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(),2));
-        listItems = new ArrayList<>() ;
+        databaseFood = FirebaseDatabase.getInstance().getReference(MainActivity.table1).orderByChild("userID").equalTo(mAuth.getUid());
 
-        listItems.add(new Post("Andi","Persija Jakarta","Juara lagi lah"));
-        listItems.add(new Post("Andi","Persija Jakarta","Juara lagi lah"));
-        listItems.add(new Post("Andi","Persija Jakarta","Juara lagi lah"));
-        listItems.add(new Post("Andi","Persija Jakarta","Juara lagi lah"));
-        listItems.add(new Post("Andi","Persija Jakarta","Juara lagi lah"));
-
-        adapter= new PostAdapter(view.getContext(),listItems);
-        recyclerView.setAdapter(adapter);
+        listPosts = new ArrayList<>() ;
 
         return view;
+    }
+
+    public void onStart() {
+        super.onStart();
+        databaseFood.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                listPosts.clear();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                    Post post = postSnapshot.getValue(Post.class);
+
+                    listPosts.add(post);
+                }
+                recyclerView.setHasFixedSize(true);
+
+                recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+
+                PostAdapter postList = new PostAdapter(getContext(),listPosts);
+
+                recyclerView.setAdapter(postList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

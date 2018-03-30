@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.homeScreen.PagerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,6 +15,10 @@ import com.google.firebase.auth.FirebaseAuth;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+
+    public static final String table1 = "Post";
+    public static final String table2 = "Comment";
+    public static final String table3 = "User";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         //get item id
         int id = item.getItemId();
-        // if action setting
+
         if (id == R.id.logout) {
             mAuth.signOut();
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -75,5 +80,10 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         return true;
+    }
+
+    public void addPost(View view) {
+        Intent i = new Intent(MainActivity.this,AddPostActivity.class);
+        startActivity(i);
     }
 }

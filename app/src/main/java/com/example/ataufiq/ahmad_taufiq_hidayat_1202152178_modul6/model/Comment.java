@@ -2,13 +2,20 @@ package com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model;
 
 public class Comment {
 
+    String id;
     String username;
     String comment;
 
-    public Comment(String username, String comment) {
+    public Comment() {
+    }
+
+    public Comment(String id,String username, String comment) {
+        this.id=id;
         this.username = username;
         this.comment = comment;
     }
+
+
 
     public String getUsername() {
         return username;
