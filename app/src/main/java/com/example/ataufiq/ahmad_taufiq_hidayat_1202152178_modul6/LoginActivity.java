@@ -70,6 +70,20 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if(currentUser != null){
+
+            sendToMain();
+
+        }
+
+    }
+
     private void createAccount(String email, String password) {
         Log.d(TAG, "createAccount:" + email);
 
@@ -134,6 +148,13 @@ public class LoginActivity extends AppCompatActivity {
             valid = true;
         }
         return valid;
+
+    }
+    private void sendToMain() {
+
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+        finish();
 
     }
 }
