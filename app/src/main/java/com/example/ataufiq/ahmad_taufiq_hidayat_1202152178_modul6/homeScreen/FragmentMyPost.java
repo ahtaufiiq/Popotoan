@@ -30,7 +30,7 @@ public class FragmentMyPost extends Fragment {
 
     private ArrayList<Post> listPosts;
 
-    Query databaseFood;
+    Query databasePost;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +42,7 @@ public class FragmentMyPost extends Fragment {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        databaseFood = FirebaseDatabase.getInstance().getReference(MainActivity.table1).orderByChild("userID").equalTo(mAuth.getUid());
+        databasePost = FirebaseDatabase.getInstance().getReference(MainActivity.table1).orderByChild("userID").equalTo(mAuth.getUid());
 
         listPosts = new ArrayList<>() ;
 
@@ -51,7 +51,7 @@ public class FragmentMyPost extends Fragment {
 
     public void onStart() {
         super.onStart();
-        databaseFood.addValueEventListener(new ValueEventListener() {
+        databasePost.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

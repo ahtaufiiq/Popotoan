@@ -36,7 +36,7 @@ public class AddPostActivity extends AppCompatActivity {
     ImageView imageView;
     Button mChooseImage;
     //our database reference object
-    DatabaseReference databaseFood;
+    DatabaseReference databasePost;
     FirebaseAuth mAuth;
 
     private Uri imageUri;
@@ -55,7 +55,7 @@ public class AddPostActivity extends AppCompatActivity {
 
         mStorage = FirebaseStorage.getInstance().getReference().child("images");
 
-        databaseFood = FirebaseDatabase.getInstance().getReference(MainActivity.table1);
+        databasePost = FirebaseDatabase.getInstance().getReference(MainActivity.table1);
 
         databaseUser = FirebaseDatabase.getInstance().getReference(MainActivity.table3);
 
@@ -86,7 +86,7 @@ public class AddPostActivity extends AppCompatActivity {
                 final String name = user.getUsername();
                 final String title = mTitlePost.getText().toString();
                 final String postMessage = mPost.getText().toString();
-                final String id = databaseFood.push().getKey();
+                final String id = databasePost.push().getKey();
                 final String userId = mAuth.getUid();
                 final long timestamp = System.currentTimeMillis();
 
@@ -102,7 +102,7 @@ public class AddPostActivity extends AppCompatActivity {
 
                                 String download_url = uploadTask.getResult().getDownloadUrl().toString();
                                 Post post = new Post(id, userId, name, download_url, title, postMessage,0-timestamp);
-                                databaseFood.child(id).setValue(post);
+                                databasePost.child(id).setValue(post);
 
                             } else {
                                 Toast.makeText(AddPostActivity.this, "Error : " + uploadTask.getException().getMessage(), Toast.LENGTH_LONG).show();

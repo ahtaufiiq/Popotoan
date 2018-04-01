@@ -36,14 +36,14 @@ public class FragmentPostTerbaru extends Fragment {
 
     private ArrayList<Post> listPosts;
     //our database reference object
-    Query databaseFood;
+    Query databasePost;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_post_terbaru, container, false);
 
-        databaseFood = FirebaseDatabase.getInstance().getReference(MainActivity.table1).orderByChild("timestamp");
+        databasePost = FirebaseDatabase.getInstance().getReference(MainActivity.table1).orderByChild("timestamp");
 
 
         mProgressDialog = new ProgressDialog(getActivity());
@@ -62,7 +62,7 @@ public class FragmentPostTerbaru extends Fragment {
     @Override
     public void onStart() {
         super.onStart(); //attaching value event listener
-        databaseFood.addValueEventListener(new ValueEventListener() {
+        databasePost.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
