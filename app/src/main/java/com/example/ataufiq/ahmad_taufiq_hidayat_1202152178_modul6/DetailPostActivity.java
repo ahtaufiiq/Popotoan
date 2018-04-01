@@ -81,7 +81,9 @@ public class DetailPostActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(textReview)) {
 
                     String id = databaseComments.push().getKey();
-                    Comment track = new Comment(id, user.getUsername(), textReview);
+                    long timestamp = System.currentTimeMillis();
+
+                    Comment track = new Comment(id, user.getUsername(), textReview,(0-timestamp));
                     databaseComments.child(id).setValue(track);
                     Toast.makeText(DetailPostActivity.this, "Comment Sent", Toast.LENGTH_LONG).show();
                     et_comment.setText("");
@@ -101,7 +103,7 @@ public class DetailPostActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        databaseComments.addValueEventListener(new ValueEventListener() {
+        databaseComments.orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

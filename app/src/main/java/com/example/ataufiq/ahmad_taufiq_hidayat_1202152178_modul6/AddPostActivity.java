@@ -107,7 +107,6 @@ public class AddPostActivity extends AppCompatActivity {
                             } else {
                                 Toast.makeText(AddPostActivity.this, "Error : " + uploadTask.getException().getMessage(), Toast.LENGTH_LONG).show();
                             }
-
                         }
                     });
 
