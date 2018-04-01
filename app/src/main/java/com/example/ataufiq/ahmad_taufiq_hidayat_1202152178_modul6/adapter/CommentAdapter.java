@@ -24,7 +24,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     Context context;
     List<Comment> commentList;
-    RoundedBitmapDrawable rounded;
+//    RoundedBitmapDrawable rounded;
 
     public CommentAdapter(Context context, List<Comment> commentList) {
         this.context = context;

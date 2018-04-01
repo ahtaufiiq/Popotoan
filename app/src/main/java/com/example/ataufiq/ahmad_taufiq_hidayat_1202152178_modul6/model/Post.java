@@ -7,18 +7,22 @@ public class Post {
     private String titlePost;
     private String post;
     private String imagePost;
+    public Long timestamp;
+
 
     //Wajib kasih Constructor Kosong
     public Post() {
     }
 
-    public Post(String id, String userID, String username, String mImagePost, String titlePost, String post) {
+    public Post(String id, String userID, String username, String mImagePost, String titlePost, String post,Long timestamp) {
         this.id = id;
         this.username = username;
         this.imagePost = mImagePost;
         this.titlePost = titlePost;
         this.post = post;
         this.userID = userID;
+        this.timestamp=timestamp;
+
     }
 
     public String getImagePost() {
@@ -43,5 +47,9 @@ public class Post {
 
     public String getPost() {
         return post;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
     }
 }

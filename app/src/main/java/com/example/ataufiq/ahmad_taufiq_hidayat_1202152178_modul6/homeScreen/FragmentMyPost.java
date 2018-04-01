@@ -44,7 +44,7 @@ public class FragmentMyPost extends Fragment {
 
         databaseFood = FirebaseDatabase.getInstance().getReference(MainActivity.table1).orderByChild("userID").equalTo(mAuth.getUid());
 
-        listPosts = new ArrayList<>();
+        listPosts = new ArrayList<>() ;
 
         return view;
     }
@@ -60,10 +60,11 @@ public class FragmentMyPost extends Fragment {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
                     Post post = postSnapshot.getValue(Post.class);
+
                     listPosts.add(post);
                 }
 
-                recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
 
                 PostAdapter postList = new PostAdapter(getContext(), listPosts);
 

@@ -50,6 +50,7 @@ public class AddPostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_post);
 
         imageUri = null;
+
         mAuth = FirebaseAuth.getInstance();
 
         mStorage = FirebaseStorage.getInstance().getReference().child("images");
@@ -57,9 +58,6 @@ public class AddPostActivity extends AppCompatActivity {
         databaseFood = FirebaseDatabase.getInstance().getReference(MainActivity.table1);
 
         databaseUser = FirebaseDatabase.getInstance().getReference(MainActivity.table3);
-
-        mAuth = FirebaseAuth.getInstance();
-
 
         mTitlePost = (EditText) findViewById(R.id.et_title_post);
         mPost = (EditText) findViewById(R.id.et_post);
@@ -83,13 +81,14 @@ public class AddPostActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                User user = dataSnapshot.child(mAuth.getUid()).getValue(User.class);
+                final User user = dataSnapshot.child(mAuth.getUid()).getValue(User.class);
 
                 final String name = user.getUsername();
                 final String title = mTitlePost.getText().toString();
                 final String postMessage = mPost.getText().toString();
                 final String id = databaseFood.push().getKey();
                 final String userId = mAuth.getUid();
+                final long timestamp = System.currentTimeMillis();
 
                 if (imageUri != null && !TextUtils.isEmpty(name)) {
 
@@ -102,7 +101,7 @@ public class AddPostActivity extends AppCompatActivity {
                             if (uploadTask.isSuccessful()) {
 
                                 String download_url = uploadTask.getResult().getDownloadUrl().toString();
-                                Post post = new Post(id, userId, name, download_url, title, postMessage);
+                                Post post = new Post(id, userId, name, download_url, title, postMessage,0-timestamp);
                                 databaseFood.child(id).setValue(post);
 
                             } else {

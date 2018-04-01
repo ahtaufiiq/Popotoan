@@ -2,9 +2,11 @@ package com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.homeScreen;
 
 
 import android.app.ProgressDialog;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +20,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class FragmentPostTerbaru extends Fragment {
@@ -32,14 +36,15 @@ public class FragmentPostTerbaru extends Fragment {
 
     private ArrayList<Post> listPosts;
     //our database reference object
-    DatabaseReference databaseFood;
+    Query databaseFood;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_post_terbaru, container, false);
 
-        databaseFood = FirebaseDatabase.getInstance().getReference(MainActivity.table1);
+        databaseFood = FirebaseDatabase.getInstance().getReference(MainActivity.table1).orderByChild("timestamp");
+
 
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -81,7 +86,7 @@ public class FragmentPostTerbaru extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                mProgressDialog.dismiss();
             }
         });
     }
