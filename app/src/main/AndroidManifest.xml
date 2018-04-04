@@ -9,9 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service android:name=".FirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".MainActivity"
-            android:label="Popotoan" />
+            android:label="Popotoan" >
+            <intent-filter>
+                <action android:name="com.example.ataufiq.popotoan_TARGET_NOTIFICATION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".LoginActivity"
             android:label="Sign In">
@@ -22,7 +34,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddPostActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity">
+        </activity>
         <activity android:name=".DetailPostActivity"
             android:parentActivityName=".MainActivity" />
     </application>

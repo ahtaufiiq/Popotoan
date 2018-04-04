@@ -15,8 +15,7 @@
             android:id="@+id/img_post"
             android:layout_centerHorizontal="true"
             android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/ic_launcher_background"/>
+            android:layout_height="120dp"/>
 
         <Button
             android:id="@+id/btn_choose_image"
@@ -43,16 +42,18 @@
                 />
 
 
-        <Button
-            android:onClick="add"
-            android:id="@+id/btn_add"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <android.support.design.widget.FloatingActionButton
             android:layout_below="@id/et_post"
-            android:layout_marginTop="25dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="Add Post"
-            android:textStyle="bold" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="@dimen/margin_24"
+            android:layout_marginEnd="17dp"
+            android:layout_marginRight="17dp"
+            android:src="@drawable/ic_done_24dp"
+            android:onClick="add"/>
 
     </RelativeLayout>
 </ScrollView>

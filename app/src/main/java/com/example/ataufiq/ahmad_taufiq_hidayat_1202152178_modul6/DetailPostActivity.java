@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.adapter.CommentAdapter;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model.Comment;
 import com.example.ataufiq.ahmad_taufiq_hidayat_1202152178_modul6.model.User;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,7 +25,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DetailPostActivity extends AppCompatActivity {
 
@@ -32,9 +38,16 @@ public class DetailPostActivity extends AppCompatActivity {
     EditText et_comment;
     DatabaseReference databaseComments;
     DatabaseReference databaseUser;
+    DatabaseReference notification;
+    DatabaseReference mRootRef;
+    DatabaseReference newNotificationref;
     private RecyclerView recyclerView;
+    private String mCurrent_state;
+    public static String user_id;
     FirebaseAuth mAuth;
     private ArrayList<Comment> listComments;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +57,19 @@ public class DetailPostActivity extends AppCompatActivity {
         //find Intent from Main Activity
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
+        user_id= intent.getStringExtra("userId");
         String username = intent.getStringExtra("Username");
         String image = intent.getStringExtra("image");
         String mTitle = intent.getStringExtra("Title");
         String mDescription = intent.getStringExtra("Post");
 
         databaseComments = FirebaseDatabase.getInstance().getReference(MainActivity.table2).child(id);
+
         databaseUser = FirebaseDatabase.getInstance().getReference(MainActivity.table3);
+
+        notification = FirebaseDatabase.getInstance().getReference().child("notifications");
+
+        mRootRef = FirebaseDatabase.getInstance().getReference();
 
         recyclerView = findViewById(R.id.recyclerViewComment);
 
@@ -82,9 +101,34 @@ public class DetailPostActivity extends AppCompatActivity {
 
                     String id = databaseComments.push().getKey();
                     long timestamp = System.currentTimeMillis();
-
                     Comment track = new Comment(id, user.getUsername(), textReview,(0-timestamp));
                     databaseComments.child(id).setValue(track);
+                    Log.d("User Id", mAuth.getUid()+"onDataChange: "+user_id);
+                    if (mAuth.getUid().equals(user_id)){
+
+                    }else {
+                        newNotificationref = mRootRef.child("notifications").child(user_id).push();
+
+                        String newNotificationId = newNotificationref.getKey();
+                        HashMap<String, String> notificationData = new HashMap<>();
+                        notificationData.put("from", mAuth.getUid());
+                        notificationData.put("type", "notificationComment");
+
+                        Map notificationMap = new HashMap();
+
+                        notificationMap.put("notifications/" + user_id + "/" + newNotificationId, notificationData);
+
+                        mRootRef.updateChildren(notificationMap, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                if (databaseError != null) {
+
+                                    Toast.makeText(DetailPostActivity.this, "There was some error in sending notification", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        });
+                    }
                     Toast.makeText(DetailPostActivity.this, "Comment Sent", Toast.LENGTH_LONG).show();
                     et_comment.setText("");
                 } else {

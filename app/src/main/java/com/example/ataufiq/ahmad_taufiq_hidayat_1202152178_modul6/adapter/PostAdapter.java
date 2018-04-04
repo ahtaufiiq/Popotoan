@@ -77,6 +77,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailPostActivity.class);
                 intent.putExtra("id",post.getId());
+                intent.putExtra("userId",post.getUserID());
                 intent.putExtra("Username",post.getUsername());
                 intent.putExtra("image",post.getImagePost());
                 intent.putExtra("Title",post.getTitlePost());
